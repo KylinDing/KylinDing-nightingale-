@@ -6,7 +6,7 @@ class ProtVistaManager extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['attributes'];
+    return ['attributes', 'displayend', 'displaystart'];
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -14,9 +14,11 @@ class ProtVistaManager extends HTMLElement {
       if (name === "attributes") {
         this._attributes = newValue.split(' ');
         if (this._attributes.indexOf('type') !== -1)
-          throw new Error("'type' can't be used as a protvista attribute")
+          throw new Error("'type' can't be used as a protvista attribute");
         if (this._attributes.indexOf('value') !== -1)
-          throw new Error("'value' can't be used as a protvista attribute")
+          throw new Error("'value' can't be used as a protvista attribute");
+      } else if (ProtVistaManager.observedAttributes.indexOf(name) !== -1) {
+        this._setAttributes(this.protvistaElements, name, newValue);
       }
     }
   }
